@@ -105,130 +105,178 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
 	<tw-storydata name="xiongdiqingren" startnode="52" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="A2993327-F6ED-48D1-948E-5A4A36D30F16" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">/* =========================================
-   1. 基础环境
+   1. 全局背景与纸张质感 (完美还原)
    ========================================= */
 body {
+    /* 暖色护眼背景 */
     background-color: #f9f5eb; 
-    /* 纸张纹理 */
+    
+    /* 还原：方格底纹质感 */
     background-image: 
-        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
-    background-size: 20px 20px;
+        linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .03) 25%, rgba(0, 0, 0, .03) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .03) 75%, rgba(0, 0, 0, .03) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .03) 25%, rgba(0, 0, 0, .03) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .03) 75%, rgba(0, 0, 0, .03) 76%, transparent 77%, transparent);
+    background-size: 50px 50px; 
+    
+    /* 深色字体 */
     color: #2d3436; 
     font-size: 110%; 
-    line-height: 1.6; /* 行间距稍微调紧一点点，更紧凑 */
-    overflow-x: hidden; 
+    line-height: 1.8; 
+    overflow-x: hidden; /* 防止手机左右晃动 */
 }
 
 /* =========================================
-   2. 侧边栏按钮 (深棕色版)
+   2. 独立的汉堡菜单按钮 (功能+美观融合)
    ========================================= */
 #ui-bar-toggle {
+    /* --- 功能部分：强制固定，层级最高 --- */
     position: fixed !important;
-    top: 10px !important;
-    left: 10px !important;
+    top: 15px !important;
+    left: 15px !important;
     z-index: 2147483647 !important; 
-    
     display: flex !important;
     align-items: center;
     justify-content: center;
-    
-    width: 45px !important; /* 稍微改小一点，更精致 */
+    width: 45px !important;
     height: 45px !important;
-    
-    /* 【修改点】背景改为深棕色，与整体风格协调 */
-    background-color: #5d4037 !important; 
-    
-    border: 2px solid #efe8d8 !important; /* 边框改成米色，增加层次 */
-    border-radius: 6px !important;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important;
-    
-    font-size: 0 !important;
-    color: transparent !important;
+    font-size: 0 !important; /* 隐藏默认文字 */
     cursor: pointer;
+
+    /* --- 视觉部分：还原深褐色风格 --- */
+    background-color: #5d4037 !important; /* 你喜欢的深咖啡色 */
+    color: #fff !important; /* 白色图标 */
+    border: 1px solid #3e2723 !important;
+    border-radius: 4px !important; /* 轻微圆角，配合你的风格 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
 }
 
-/* “三道杠”图标 */
+/* 绘制“三道杠”图标 */
 #ui-bar-toggle::before {
     content: "\2261"; 
     font-size: 28px !important;
-    color: #fff !important; 
-    display: block;
     line-height: 1;
     font-weight: bold;
 }
 
 #ui-bar-toggle:hover {
-    background-color: #795548 !important; /* 悬停稍微变浅 */
-    transform: scale(1.05);
+    background-color: #8d6e63 !important; /* 悬停变浅 */
+    transform: translateY(-1px);
 }
 
 /* =========================================
-   3. 侧边栏主体
+   3. 侧边栏主体 (抽屉式逻辑 + 原版配色)
    ========================================= */
 #ui-bar {
+    /* --- 视觉部分：还原配色 --- */
     background-color: #efe8d8; 
-    border-right: 3px solid #cbbba0; 
-    box-shadow: 5px 0 20px rgba(0,0,0,0.3); 
+    border-right: 4px solid #cbbba0; 
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1); 
     
+    /* --- 功能部分：抽屉式固定 --- */
     position: fixed !important;
     top: 0;
     left: 0;
     width: 260px;
     height: 100vh;
     z-index: 200000 !important; 
-    
-    padding-top: 70px; 
+    padding: 70px 20px 20px 20px; /* 顶部留空避开按钮 */
     transition: transform 0.3s ease;
 }
 
+/* 隐藏原有标题 (这次加了 !important 确保隐藏) */
+#story-title { 
+    display: none !important; 
+}
+
+/* 收起状态 */
 #ui-bar.stowed {
     transform: translateX(-120%) !important; 
     visibility: visible !important;
     display: block !important;
 }
-
+/* 展开状态 */
 #ui-bar:not(.stowed) {
     transform: translateX(0) !important;
 }
 
+/* 侧边栏文字美化 */
+#ui-bar-body { color: #5d4037; font-weight: bold; line-height: 1.6; }
+#ui-bar hr { border: 0; height: 1px; background: #a1887f; margin: 15px 0; }
+
+/* 侧边栏按钮美化 */
+#ui-bar button {
+    background-color: #5d4037; color: #fff; border: none; 
+    border-radius: 4px; padding: 8px 16px; margin-bottom: 10px;
+    width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+#ui-bar button:hover { background-color: #8d6e63; }
+
 /* =========================================
-   4. 正文布局优化 (紧凑版)
+   4. 选项与链接 (完全还原你的卡片风格)
    ========================================= */
-#story {
-    /* 【修改点】顶部间距大幅减小，只要不挡住按钮就行 */
-    margin-top: 40px !important; 
-    margin-left: 0 !important; 
-    
-    /* 【修改点】左右间距减小 */
-    padding: 10px 15px !important; 
+a {
+    color: #c0392b; 
+    text-decoration: none;
+    border-bottom: 1px dashed #c0392b;
+    transition: all 0.2s;
+}
+a:hover {
+    color: #e74c3c;
+    background-color: rgba(192, 57, 43, 0.1);
+    border-bottom: 1px solid #e74c3c;
 }
 
-/* 手机端特别优化 */
+/* 【重点还原】正文里的选项链接美化 */
+.passage a.link-internal {
+    display: block; /* 变成块级元素 */
+    padding: 10px 15px;
+    margin: 10px 0;
+    
+    /* 半透明白底 + 左侧红线 */
+    background-color: rgba(255, 255, 255, 0.6); 
+    border-left: 5px solid #c0392b; 
+    
+    color: #2c3e50; 
+    border-bottom: none; 
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05); /* 加点微弱阴影更像卡片 */
+}
+
+.passage a.link-internal:hover {
+    background-color: #fff;
+    padding-left: 25px; /* 经典的右移特效 */
+    color: #c0392b;
+}
+
+/* =========================================
+   5. 正文布局与手机适配 (功能修复)
+   ========================================= */
+#story {
+    /* 顶部避开按钮 */
+    margin-top: 50px !important; 
+    margin-left: 0 !important; 
+}
+
 @media screen and (max-width: 768px) {
     #ui-bar { width: 240px; }
     
     #story { 
-        /* 手机上顶部再稍微紧凑点 */
-        margin-top: 50px !important; 
-        
-        /* 【修改点】手机左右间距极窄，利用屏幕空间 */
-        padding: 0 10px 40px 10px !important; 
+        margin-top: 40px !important; 
+        /* 左右留白：25px (既不挤也不空) */
+        padding: 0 25px 60px 25px !important; 
     }
     
-    /* 修正段落最大宽度，防止大屏上字太散 */
     .passage {
         max-width: 100%;
-        text-align: justify; /* 两端对齐，看起来更整齐 */
+        font-size: 100%;
+        line-height: 1.7;
+        text-align: justify;
     }
-}
-
-/* 组件隐藏与美化 */
-#story-title { display: none; }
-#ui-bar-body { color: #5d4037; font-weight: bold; }
-#ui-bar hr { border: 0; height: 1px; background: #a1887f; margin: 15px 0; }
-#ui-bar button {
-    background: #5d4037; color: #fff; border: none; padding: 10px; width: 100%; margin-bottom: 10px; border-radius: 4px;
+    
+    /* 锁屏界面微调 */
+    body.lock-mode #story {
+        margin-top: 10px !important;
+        padding: 10px 20px !important;
+    }
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* ========================================================
    修复侧边栏消失的核心补丁
    功能：把汉堡按钮从侧边栏移到 body 层，防止随侧边栏一起消失
@@ -832,7 +880,8 @@ $(document).ready(function() {
 [[呼救|Ending5_Success]]</tw-passagedata><tw-passagedata pid="28" name="Escape_Sequence" tags="" position="1475,1625" size="100,100">他已经走了一个小时了。不过他本来体能就不怎么好，又受了伤，现在肯定还没有跑远。你驱车找人，又联系了几个心腹下属，让他们从市区出发，和你一起寻找他的踪迹。
 
 [[ 视角切换|hezhengyushijiao]]
-</tw-passagedata><tw-passagedata pid="29" name="Start" tags="" position="500,300" size="100,100">!!【第一章】
+</tw-passagedata><tw-passagedata pid="29" name="Start" tags="" position="500,300" size="100,100">&lt;&lt;script&gt;&gt;$(&quot;#ui-bar-toggle&quot;).show();&lt;&lt;/script&gt;&gt;
+!!【第一章】
 最近大哥遇到了点小麻烦，一个叫何正钰的律师在调查他。
 起因是大哥手下的人办事不利索，处理纠纷的时候竟然不小心透露了有哥哥插手。作为本市最年轻的高官，立刻就引起了那个律师的关注，竟然还不知死活地开始跟踪大哥，摆明要和大哥死磕。“正事”处理不好就会引起民怨，“小事”办不好就会被人揪着不放，何正钰作为知名律师还是有本事的，大哥的事业受到威胁，因此他必须尽快解决掉这个麻烦。
 
@@ -1188,54 +1237,61 @@ $(document).ready(function() {
 
 &lt;&lt;getEnding &quot;ending5&quot;&gt;&gt;
 
-</tw-passagedata><tw-passagedata pid="52" name="LockScreen" tags="" position="500,50" size="100,100">/* 隐藏侧边栏，营造独立界面的沉浸感 */
-&lt;&lt;script&gt;&gt;UIBar.stow()&lt;&lt;/script&gt;&gt;
+</tw-passagedata><tw-passagedata pid="52" name="LockScreen" tags="" position="500,50" size="100,100">/* 1. 隐藏侧边栏逻辑 */
+&lt;&lt;script&gt;&gt;
+    UIBar.stow();
+    // 【关键】隐藏那个红色的悬浮按钮，防止它挡住锁屏卡片
+    $(&quot;#ui-bar-toggle&quot;).hide();
+    // 给 body 加个标记，方便 CSS 调整间距
+    $(&quot;body&quot;).addClass(&quot;lock-mode&quot;);
+&lt;&lt;/script&gt;&gt;
 
-/* 设置一个居中的容器，带红色边框示警 */
-&lt;div style=&quot;max-width: 600px; margin: 50px auto; padding: 30px; border: 4px double #d63031; background-color: #2d3436; color: #dfe6e9; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.8);&quot;&gt;
+/* 2. 锁屏卡片容器 */
+/* 调整了 margin-top，让它在手机上位置更自然 */
+&lt;div style=&quot;max-width: 500px; margin: 30px auto; padding: 25px; border: 3px double #e17055; background-color: #2d3436; color: #dfe6e9; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative;&quot;&gt;
 
-&lt;h2 style=&quot;text-align:center; color: #ff7675; margin-top:0;&quot;&gt;⚠️ 阅读须知 &amp; 授权声明&lt;/h2&gt;
+    /* 装饰性的标题背景条 */
+    &lt;div style=&quot;text-align:center; border-bottom: 1px solid #636e72; padding-bottom: 15px; margin-bottom: 20px;&quot;&gt;
+        &lt;h2 style=&quot;color: #ff7675; margin: 0; font-size: 1.4em; letter-spacing: 1px;&quot;&gt;⚠️ 阅读须知 &amp; 授权声明&lt;/h2&gt;
+    &lt;/div&gt;
 
-&lt;hr style=&quot;border-color: #636e72;&quot;&gt;
+    &lt;p style=&quot;font-size: 1em; line-height: 1.6;&quot;&gt;&lt;strong&gt;1. 原作说明：&lt;/strong&gt;&lt;br&gt;
+    本文为电视剧《我的秘密室友》同人衍生（何正钰）。&lt;br&gt;
+    &lt;span style=&quot;font-size: 0.9em; opacity: 0.8;&quot;&gt;*请勿上升真人，圈地自萌。&lt;/span&gt;&lt;/p&gt;
 
-&lt;p style=&quot;font-size: 1.1em;&quot;&gt;&lt;strong&gt;1. 同人原作说明：&lt;/strong&gt;&lt;br&gt;
-本文为电视剧&lt;strong&gt;《我的秘密室友》&lt;/strong&gt;同人衍生作品。&lt;br&gt;
-涉及主要角色：&lt;strong&gt;何正钰&lt;/strong&gt;。&lt;br&gt;
-&lt;em&gt;*请勿上升真人演员，请勿在公共平台大肆宣扬。&lt;/em&gt;&lt;/p&gt;
+    &lt;p style=&quot;font-size: 1em; line-height: 1.6;&quot;&gt;&lt;strong&gt;2. 高能预警：&lt;/strong&gt;&lt;br&gt;
+    含&lt;strong&gt;强制、暴力、成人向&lt;/strong&gt;内容。未满18岁或不适者请退出。&lt;/p&gt;
 
-&lt;p style=&quot;font-size: 1.1em;&quot;&gt;&lt;strong&gt;2. 高能内容预警：&lt;/strong&gt;&lt;br&gt;
-本作品包含&lt;strong&gt;强制爱、监禁、暴力描写、非典型情感关系&lt;/strong&gt;等成人向（R18G）内容。&lt;br&gt;
-部分剧情可能涉及角色 OOC（性格崩坏）或三观不正，仅为剧情服务，&lt;strong&gt;未满 18 岁或对此类题材不适者请立即退出。&lt;/strong&gt;&lt;/p&gt;
+    &lt;p style=&quot;font-size: 1em; line-height: 1.6;&quot;&gt;&lt;strong&gt;3. 授权声明：&lt;/strong&gt;&lt;br&gt;
+    &lt;span style=&quot;color: #fab1a0;&quot;&gt;免费分享，严禁商用、三创或转载。&lt;/span&gt;&lt;/p&gt;
 
-&lt;p style=&quot;font-size: 1.1em;&quot;&gt;&lt;strong&gt;3. 版权与授权（License）：&lt;/strong&gt;&lt;br&gt;
-&lt;span style=&quot;color: #fab1a0; font-weight: bold;&quot;&gt;
-• 本文为免费分享，严禁用于任何商业用途（包括但不限于付费阅读、贩卖资源）。&lt;br&gt;
-• 不授权任何形式的“三创”（禁止改编为有声剧、视频、其他平台游戏、扩写等）。&lt;br&gt;
-• 禁止非授权转载、二改或盗用。
-&lt;/span&gt;&lt;/p&gt;
+    &lt;hr style=&quot;border-color: #636e72; margin: 20px 0;&quot;&gt;
 
-&lt;hr style=&quot;border-color: #636e72;&quot;&gt;
+    &lt;div style=&quot;text-align:center;&quot;&gt;
+        &lt;p style=&quot;margin-bottom: 10px;&quot;&gt;已知悉并接受条款，请输入密码：&lt;/p&gt;
 
-&lt;div style=&quot;text-align:center; margin-top: 20px;&quot;&gt;
-    &lt;p&gt;如果您&lt;strong&gt;已知悉并接受&lt;/strong&gt;以上所有条款，请输入密码解锁：&lt;/p&gt;
+        /* 输入框样式美化 */
+        &lt;span style=&quot;display:inline-block; border: 1px solid #b2bec3; padding: 5px; background: #fff; border-radius: 4px;&quot;&gt;
+            &lt;&lt;textbox &quot;$inputPass&quot; &quot;&quot;&gt;&gt;
+        &lt;/span&gt;
 
-    /* 输入框 */
-    &lt;span style=&quot;color:black;&quot;&gt;&lt;&lt;textbox &quot;$inputPass&quot; &quot;&quot;&gt;&gt;&lt;/span&gt;
+        &lt;br&gt;&lt;br&gt;
 
-    &lt;br&gt;&lt;br&gt;
-
-    &lt;&lt;button &quot;确认无误，解锁进入&quot;&gt;&gt;
-        /* 【在这里修改密码】 将 &quot;123456&quot; 改为你想要的密码 */
-        &lt;&lt;if $inputPass is &quot;123456&quot;&gt;&gt;
-            /* 密码正确：恢复侧边栏，跳转到第一章 */
-            &lt;&lt;script&gt;&gt;UIBar.unstow()&lt;&lt;/script&gt;&gt;
-            &lt;&lt;goto &quot;Start&quot;&gt;&gt;
-        &lt;&lt;else&gt;&gt;
-            /* 密码错误：弹出警告 */
-            &lt;&lt;run UI.alert(&quot;密码错误，或您未同意阅读须知。&quot;)&gt;&gt;
-        &lt;&lt;/if&gt;&gt;
-    &lt;&lt;/button&gt;&gt;
-&lt;/div&gt;
+        &lt;&lt;button &quot;解锁进入&quot;&gt;&gt;
+            /* 【记得改密码】 */
+            &lt;&lt;if $inputPass is &quot;123456&quot;&gt;&gt;
+                /* 密码正确：恢复按钮，跳转开始 */
+                &lt;&lt;script&gt;&gt;
+                    UIBar.unstow();
+                    $(&quot;#ui-bar-toggle&quot;).show(); // 【关键】把按钮显示出来
+                    $(&quot;body&quot;).removeClass(&quot;lock-mode&quot;);
+                &lt;&lt;/script&gt;&gt;
+                &lt;&lt;goto &quot;Start&quot;&gt;&gt;
+            &lt;&lt;else&gt;&gt;
+                &lt;&lt;run UI.alert(&quot;密码错误或未同意条款。&quot;)&gt;&gt;
+            &lt;&lt;/if&gt;&gt;
+        &lt;&lt;/button&gt;&gt;
+    &lt;/div&gt;
 
 &lt;/div&gt;</tw-passagedata></tw-storydata>
 	<script id="script-sugarcube" type="text/javascript">
