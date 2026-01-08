@@ -105,144 +105,154 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
 	<tw-storydata name="xiongdiqingren" startnode="52" creator="Twine" creator-version="2.10.0" format="SugarCube" format-version="2.37.3" ifid="A2993327-F6ED-48D1-948E-5A4A36D30F16" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">/* =========================================
-   1. 全局背景与纸张质感 (Urban Novel Paper)
+   1. 基础环境
    ========================================= */
 body {
-    /* 暖色护眼背景，模拟纸张颜色 */
     background-color: #f9f5eb; 
-    
-    /* 使用 CSS 渐变模拟纸张的细微纹理（底纹） */
+    /* 纸张纹理 */
     background-image: 
-        linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .03) 25%, rgba(0, 0, 0, .03) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .03) 75%, rgba(0, 0, 0, .03) 76%, transparent 77%, transparent),
-        linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .03) 25%, rgba(0, 0, 0, .03) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .03) 75%, rgba(0, 0, 0, .03) 76%, transparent 77%, transparent);
-    background-size: 50px 50px; /* 纹理网格大小 */
-    
-    /* 深色字体，确保护眼易读 */
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
     color: #2d3436; 
-    font-size: 110%; /* 稍微加大一点字号，更像电子书 */
-    line-height: 1.8; /* 增加行间距，避免文字拥挤 */
+    font-size: 110%; 
+    line-height: 1.6; /* 行间距稍微调紧一点点，更紧凑 */
+    overflow-x: hidden; 
 }
 
 /* =========================================
-   2. 侧边栏美化 (Sidebar)
+   2. 侧边栏按钮 (深棕色版)
    ========================================= */
-#ui-bar {
-    /* 侧边栏背景：比主背景稍微深一点的暖色 */
-    background-color: #efe8d8; 
-    border-right: 4px solid #cbbba0; /* 右侧分割线，增加层次感 */
-    box-shadow: 2px 0 10px rgba(0,0,0,0.1); /* 增加一点阴影 */
-    padding: 20px;
-}
-
-/* 隐藏侧边栏顶部的故事标题（如你所愿） */
-#story-title {
-    display: none;
-}
-
-/* 侧边栏里的文字样式 */
-#ui-bar-body {
-    color: #5d4037; /* 深咖啡色，对比度高 */
-    font-weight: bold;
-    line-height: 1.6;
-}
-
-/* 侧边栏分割线 */
-#ui-bar hr {
-    border: none;
-    height: 1px;
-    background-color: #a1887f; /* 咖啡色分割线 */
-    margin: 15px 0;
-}
-
-/* =========================================
-   3. 按钮与链接 (Buttons & Links)
-   ========================================= */
-/* 普通链接文字颜色 - 砖红色/都市风格 */
-a {
-    color: #c0392b; 
-    text-decoration: none;
-    border-bottom: 1px dashed #c0392b; /* 虚线下划线，增加精致感 */
-    transition: all 0.2s;
-}
-
-a:hover {
-    color: #e74c3c;
-    background-color: rgba(192, 57, 43, 0.1); /* 鼠标悬停时有淡淡的背景 */
-    text-decoration: none;
-    border-bottom: 1px solid #e74c3c;
-}
-
-/* 侧边栏按钮（存档、重启等） & 选项按钮 */
-#ui-bar button, 
-.passage button {
-    background-color: #5d4037; /* 深褐色背景，醒目 */
-    color: #fff !important; /* 白色文字 */
-    border: none;
-    border-radius: 4px; /* 轻微圆角 */
-    padding: 8px 16px;
-    font-size: 0.9em;
-    cursor: pointer;
-    transition: background 0.3s;
-    text-transform: uppercase; /* 字母大写（如果是英文的话），增加设计感 */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* 按钮立体感 */
-    display: block; /* 让侧边栏按钮独占一行 */
-    width: 100%; /* 按钮充满侧边栏宽度 */
-    margin-bottom: 10px;
-}
-
-/* 按钮悬停效果 */
-#ui-bar button:hover, 
-.passage button:hover {
-    background-color: #8d6e63; /* 悬停变浅一点的褐色 */
-    transform: translateY(-1px); /* 轻微上浮 */
-}
-
-/* 专门针对正文里的选项链接（[[选项|跳转]]）美化 */
-.passage a.link-internal {
-    display: block; /* 选项变成块级元素，像按钮条一样 */
-    padding: 10px 15px;
-    margin: 10px 0;
-    background-color: rgba(255, 255, 255, 0.6); /* 半透明白色背景 */
-    border-left: 5px solid #c0392b; /* 左侧红色竖条 */
-    color: #2c3e50; /* 深色文字 */
-    border-bottom: none; /* 去掉之前的下划线 */
-    border-radius: 0 4px 4px 0;
-}
-
-.passage a.link-internal:hover {
-    background-color: #fff;
-    padding-left: 25px; /* 悬停时向右移动，有交互感 */
-    color: #c0392b;
-}
-
-/* =========================================
-   4. 侧边栏开关按钮 (UI Toggle)
-   ========================================= */
-/* 那个“收起/展开”侧边栏的按钮 */
 #ui-bar-toggle {
-    background-color: #5d4037; /* 深色背景，醒目 */
-    color: #fff; /* 白色图标 */
-    border: 1px solid #3e2723;
-    padding: 5px;
-    top: 10px; /* 稍微调整位置 */
-    left: 10px;
+    position: fixed !important;
+    top: 10px !important;
+    left: 10px !important;
+    z-index: 2147483647 !important; 
+    
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    
+    width: 45px !important; /* 稍微改小一点，更精致 */
+    height: 45px !important;
+    
+    /* 【修改点】背景改为深棕色，与整体风格协调 */
+    background-color: #5d4037 !important; 
+    
+    border: 2px solid #efe8d8 !important; /* 边框改成米色，增加层次 */
+    border-radius: 6px !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important;
+    
+    font-size: 0 !important;
+    color: transparent !important;
+    cursor: pointer;
+}
+
+/* “三道杠”图标 */
+#ui-bar-toggle::before {
+    content: "\2261"; 
+    font-size: 28px !important;
+    color: #fff !important; 
+    display: block;
+    line-height: 1;
+    font-weight: bold;
 }
 
 #ui-bar-toggle:hover {
-    background-color: #8d6e63;
+    background-color: #795548 !important; /* 悬停稍微变浅 */
+    transform: scale(1.05);
 }
 
 /* =========================================
-   5. 手机/移动端适配微调
+   3. 侧边栏主体
    ========================================= */
+#ui-bar {
+    background-color: #efe8d8; 
+    border-right: 3px solid #cbbba0; 
+    box-shadow: 5px 0 20px rgba(0,0,0,0.3); 
+    
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    z-index: 200000 !important; 
+    
+    padding-top: 70px; 
+    transition: transform 0.3s ease;
+}
+
+#ui-bar.stowed {
+    transform: translateX(-120%) !important; 
+    visibility: visible !important;
+    display: block !important;
+}
+
+#ui-bar:not(.stowed) {
+    transform: translateX(0) !important;
+}
+
+/* =========================================
+   4. 正文布局优化 (紧凑版)
+   ========================================= */
+#story {
+    /* 【修改点】顶部间距大幅减小，只要不挡住按钮就行 */
+    margin-top: 40px !important; 
+    margin-left: 0 !important; 
+    
+    /* 【修改点】左右间距减小 */
+    padding: 10px 15px !important; 
+}
+
+/* 手机端特别优化 */
 @media screen and (max-width: 768px) {
-    body {
-        font-size: 100%; /* 手机上字体稍微小一点 */
+    #ui-bar { width: 240px; }
+    
+    #story { 
+        /* 手机上顶部再稍微紧凑点 */
+        margin-top: 50px !important; 
+        
+        /* 【修改点】手机左右间距极窄，利用屏幕空间 */
+        padding: 0 10px 40px 10px !important; 
     }
-    #ui-bar {
-        background-color: #f7f1e3; /* 手机版侧边栏颜色 */
+    
+    /* 修正段落最大宽度，防止大屏上字太散 */
+    .passage {
+        max-width: 100%;
+        text-align: justify; /* 两端对齐，看起来更整齐 */
     }
-}</style><script role="script" id="twine-user-script" type="text/twine-javascript"></script><tw-tag name="ending" color="purple"></tw-tag><tw-passagedata pid="1" name="Chapter7_Start" tags="" position="1350,2700" size="100,100">不知道过了多久，何正钰费力地睁开眼睛，发现房间内的窗帘拉着，阳光投射不进来，房间里只有黯淡的灯光。
+}
+
+/* 组件隐藏与美化 */
+#story-title { display: none; }
+#ui-bar-body { color: #5d4037; font-weight: bold; }
+#ui-bar hr { border: 0; height: 1px; background: #a1887f; margin: 15px 0; }
+#ui-bar button {
+    background: #5d4037; color: #fff; border: none; padding: 10px; width: 100%; margin-bottom: 10px; border-radius: 4px;
+}</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* ========================================================
+   修复侧边栏消失的核心补丁
+   功能：把汉堡按钮从侧边栏移到 body 层，防止随侧边栏一起消失
+   ======================================================== */
+$(document).ready(function() {
+    var $toggle = $("#ui-bar-toggle");
+    
+    // 如果按钮还在侧边栏里，把它移到 body 下
+    if ($toggle.parent().is("#ui-bar") || $toggle.parent().is("#ui-bar-tray")) {
+        $toggle.detach().appendTo("body");
+    }
+    
+    // 强制重置按钮样式，确保它可见
+    $toggle.css({
+        "position": "fixed",
+        "top": "10px",
+        "left": "10px",
+        "z-index": "999999",
+        "display": "block"
+    });
+    
+    // 确保侧边栏逻辑正常
+    UIBar.stow(); // 默认收起
+});</script><tw-tag name="ending" color="purple"></tw-tag><tw-passagedata pid="1" name="Chapter7_Start" tags="" position="1350,2700" size="100,100">不知道过了多久，何正钰费力地睁开眼睛，发现房间内的窗帘拉着，阳光投射不进来，房间里只有黯淡的灯光。
 这是在哪儿？
 他想动一动手脚，全身上下却一点儿力气也没有，一动也不能动。
 “呦，醒了？”是那个将他带入地狱的男人的声音。
